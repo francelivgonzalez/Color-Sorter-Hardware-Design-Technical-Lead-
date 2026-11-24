@@ -1,4 +1,4 @@
-# Color Sorting System — Circuit Diagram Specification
+# Color Sorting System - Circuit Diagram Specification
 
 ## Controller
 Arduino Uno R3
@@ -14,44 +14,44 @@ Arduino Uno R3
 The power supply rating and component current requirements must be verified. The mains supply is represented as a sealed module.
 
 ## TCS3200 Connections
-- `VCC` → 5V
-- `GND` → GND
-- `S0` → `D4`
-- `S1` → `D5`
-- `S2` → `D6`
-- `S3` → `D7`
-- `OUT` → `D8`
-- `OE` → `GND`
+- `VCC` -> 5V
+- `GND` -> GND
+- `S0` -> `D4`
+- `S1` -> `D5`
+- `S2` -> `D6`
+- `S3` -> `D7`
+- `OUT` -> `D8`
+- `OE` -> `GND`
 
 ## A4988 Connections
-- `STEP` → `D2`
-- `DIR` → `D3`
-- `ENABLE` → `D9`
-- `VDD` → 5V
-- `Logic GND` → `GND`
-- `VMOT` → 12V
-- `Motor GND` → Common DC ground
-- `RESET` and `SLEEP` → HIGH
-- `MS1`, `MS2`, `MS3` → `GND` for full-step mode
+- `STEP` -> `D2`
+- `DIR` -> `D3`
+- `ENABLE` -> `D9`
+- `VDD` -> 5V
+- `Logic GND` -> GND
+- `VMOT` -> 12V
+- `Motor GND` -> Common DC ground
+- `RESET` and `SLEEP` -> HIGH
+- `MS1`, `MS2`, `MS3` -> `GND` for full-step mode
 
 Include a suitably rated bulk capacitor near `VMOT` and `Motor GND`. Motor coil pairs must be identified before connection.
 
 ## Homing Switch
-- Switch signal → `D10`
-- Other terminal → `GND`
+- Switch signal -> `D10`
+- Other terminal -> `GND`
 - Active LOW using `INPUT_PULLUP`
 
 ## PCA9685 Connections
-- `VCC` → 5V logic
-- `GND` → Common GND
-- `SDA` → Arduino `A4`
-- `SCL` → Arduino `A5`
-- `V+` → Regulated servo supply
+- `VCC` -> 5V logic
+- `GND` -> Common GND
+- `SDA` -> Arduino `A4`
+- `SCL` -> Arduino `A5`
+- `V+` -> Regulated servo supply
 
 ## Proposed Servo Channels
-- Channel 0 → Intake servo
-- Channel 1 → Sorting gate servo
-- Channel 2 → Routing servo
+- Channel 0 -> Intake servo
+- Channel 1 -> Sorting gate servo
+- Channel 2 -> Routing servo
 
 ## Diagram Requirements
 Create two diagrams:
