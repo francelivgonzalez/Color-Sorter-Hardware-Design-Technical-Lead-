@@ -1,4 +1,3 @@
-
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
@@ -6,7 +5,7 @@
  * Color Sorting System
  * Arduino Uno R3
  *
- * Reconstructed firmware - development version
+ * Firmware - development version
  *
  * Hardware:
  * - Arduino Uno R3
