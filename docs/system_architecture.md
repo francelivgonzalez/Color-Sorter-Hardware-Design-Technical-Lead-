@@ -1,4 +1,4 @@
-# Color Sorting System — System Architecture
+# Color Sorting System - System Architecture
 
 ## Overview
 
