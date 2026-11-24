@@ -1,4 +1,4 @@
-# Color Sorting System — Control Logic
+# Color Sorting System - Control Logic
 
 ## Overview
 
