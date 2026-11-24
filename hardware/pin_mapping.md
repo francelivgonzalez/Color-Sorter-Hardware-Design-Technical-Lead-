@@ -1,4 +1,4 @@
-# Color Sorting System — Pin Mapping
+# Color Sorting System - Pin Mapping
 
 ## Overview
 
@@ -44,7 +44,7 @@ The hardware setup includes:
 | `MS1`, `MS2`, `MS3` | `GND` | Configured for full-step mode |
 
 > **Important:**
-> - Place an appropriately rated bulk capacitor (typically at least `47 µF`, commonly `100 µF`) directly across `VMOT` and `Motor GND` close to the A4988. Verify polarity and voltage rating before powering on.
+> - Place an appropriately rated bulk capacitor (typically at least `47 uF`, commonly `100 uF`) directly across `VMOT` and `Motor GND` close to the A4988. Verify polarity and voltage rating before powering on.
 > - Set the A4988 current limit to match your NEMA 17 motor rating and driver cooling setup before running the motor.
 
 ---
@@ -74,7 +74,7 @@ The hardware setup includes:
 | :--- | :--- | :--- |
 | Channel `0` | Intake servo | Provisional until mechanical design is confirmed |
 | Channel `1` | Sorting gate servo | Provisional until mechanical design is confirmed |
-| Channel `2` | Output routing servo | Provisional until mechanical design is confirmed |
+| Channel `2` | Routing servo | Provisional until mechanical design is confirmed |
 
 > **Note:** Size the 5V servo supply for peak servo current draw. Do **not** power servos from the Arduino Uno R3's onboard 5V regulator.
 
@@ -82,12 +82,12 @@ The hardware setup includes:
 
 ## 5. Power Distribution
 
-- **120V AC mains** → Enclosed 12V DC power supply (mains side)
-- **12V DC supply output** → 12V DC bus
-- **12V DC bus** → A4988 `VMOT` and buck converter input
-- **Buck converter output** → Regulated 5V logic bus (Arduino, TCS3200 `VCC`, PCA9685 `VCC`)
-- **Dedicated 5V servo supply** → PCA9685 `V+`
-- **All low-voltage grounds** → Common DC ground
+- **120V AC mains** -> Enclosed 12V DC power supply (mains side)
+- **12V DC supply output** -> 12V DC bus
+- **12V DC bus** -> A4988 `VMOT` and buck converter input
+- **Buck converter output** -> Regulated 5V logic bus (Arduino, TCS3200 `VCC`, PCA9685 `VCC`)
+- **Dedicated 5V servo supply** -> PCA9685 `V+`
+- **All low-voltage grounds** -> Common DC ground
 
 Ensure the 12V AC/DC supply and buck converter have sufficient current headroom for continuous operation. Using a dedicated 5V regulator for servos helps prevent brownouts and noise on the logic rail.
 
