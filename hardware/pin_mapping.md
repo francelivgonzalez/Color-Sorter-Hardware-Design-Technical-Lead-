@@ -1,170 +1,99 @@
-\# Color Sorting System — Pin Mapping
+# Color Sorting System — Pin Mapping
 
+## Overview
 
+This document defines the proposed **Arduino Uno R3** connections for the reconstructed Color Sorting System.
 
-\## Overview
+The hardware setup includes:
+- **TCS3200** color sensor for color detection
+- **A4988** stepper driver for indexing
+- **PCA9685** PWM driver for multiple servos
+- **Limit switch** for homing
 
+---
 
+## 1. TCS3200 Color Sensor
 
-This document defines the proposed Arduino Uno R3 connections for the reconstructed Color Sorting System.
+| Sensor Pin | Arduino / Power Connection | Notes |
+| :--- | :--- | :--- |
+| `VCC` | Regulated 5V | |
+| `GND` | Common GND | |
+| `S0` | `D4` | Frequency scaling select |
+| `S1` | `D5` | Frequency scaling select |
+| `S2` | `D6` | Photodiode mode select |
+| `S3` | `D7` | Photodiode mode select |
+| `OUT` | `D8` | Frequency output signal |
+| `OE` | `GND` | Output enable (active LOW; tied to GND so output is enabled) |
 
+---
 
+## 2. A4988 Stepper Motor Driver
 
-The system uses a TCS3200 sensor for color detection, an A4988 driver for stepper indexing, a PCA9685 for multiple servos, and a limit switch for homing.
+| A4988 Pin | Connection | Notes |
+| :--- | :--- | :--- |
+| `STEP` | Arduino `D2` | Step pulse input |
+| `DIR` | Arduino `D3` | Direction control |
+| `ENABLE` | Arduino `D9` | Driver enable (verify active-LOW/HIGH logic in code) |
+| `VDD` | Regulated 5V | Logic supply |
+| `Logic GND` | Common GND | |
+| `VMOT` | 12V DC supply | Motor supply |
+| `Motor GND` | 12V supply negative | |
+| `1A` / `1B` | NEMA 17 coil A | First motor coil pair |
+| `2A` / `2B` | NEMA 17 coil B | Second motor coil pair |
+| `RESET` & `SLEEP` | Tied together, pulled HIGH to `VDD` | Keeps driver awake and out of reset |
+| `MS1`, `MS2`, `MS3` | `GND` | Configured for full-step mode |
 
+> **Important:**
+> - Place an appropriately rated bulk capacitor (typically at least `47 µF`, commonly `100 µF`) directly across `VMOT` and `Motor GND` close to the A4988. Verify polarity and voltage rating before powering on.
+> - Set the A4988 current limit to match your NEMA 17 motor rating and driver cooling setup before running the motor.
 
+---
 
-\## 1. TCS3200 Color Sensor
+## 3. Homing Limit Switch
 
+| Switch / Arduino | Connection | Notes |
+| :--- | :--- | :--- |
+| Signal terminal | Arduino `D10` | Configured as `INPUT_PULLUP` |
+| Other terminal | `GND` | Active LOW when pressed |
 
+---
 
-\- VCC → Regulated 5V
+## 4. PCA9685 Servo Driver
 
-\- GND → Common GND
+| PCA9685 Pin | Connection | Notes |
+| :--- | :--- | :--- |
+| `VCC` | Regulated 5V | Logic supply |
+| `GND` | Common GND | |
+| `SDA` | Arduino `A4` | I2C data |
+| `SCL` | Arduino `A5` | I2C clock |
+| `V+` | Regulated 5V servo supply | Dedicated servo power rail |
 
-\- S0 → Arduino D4
+### Proposed Servo Channels
 
-\- S1 → Arduino D5
+| Channel | Proposed Role | Status |
+| :--- | :--- | :--- |
+| Channel `0` | Intake servo | Provisional until mechanical design is confirmed |
+| Channel `1` | Sorting gate servo | Provisional until mechanical design is confirmed |
+| Channel `2` | Output routing servo | Provisional until mechanical design is confirmed |
 
-\- S2 → Arduino D6
+> **Note:** Size the 5V servo supply for peak servo current draw. Do **not** power servos from the Arduino Uno R3's onboard 5V regulator.
 
-\- S3 → Arduino D7
+---
 
-\- OUT → Arduino D8
+## 5. Power Distribution
 
-\- OE → GND (sensor output enabled)
+- **120V AC mains** → Enclosed 12V DC power supply (mains side)
+- **12V DC supply output** → 12V DC bus
+- **12V DC bus** → A4988 `VMOT` and buck converter input
+- **Buck converter output** → Regulated 5V logic bus (Arduino, TCS3200 `VCC`, PCA9685 `VCC`)
+- **Dedicated 5V servo supply** → PCA9685 `V+`
+- **All low-voltage grounds** → Common DC ground
 
+Ensure the 12V AC/DC supply and buck converter have sufficient current headroom for continuous operation. Using a dedicated 5V regulator for servos helps prevent brownouts and noise on the logic rail.
 
+---
 
-\## 2. A4988 Stepper Motor Driver
+## 6. Unused Arduino Pins
 
-
-
-\- STEP → Arduino D2
-
-\- DIR → Arduino D3
-
-\- ENABLE → Arduino D9
-
-\- VDD → Regulated 5V
-
-\- Logic GND → Common GND
-
-\- VMOT → 12V DC supply
-
-\- Motor GND → 12V supply negative
-
-\- 1A / 1B → One NEMA 17 motor coil
-
-\- 2A / 2B → Other NEMA 17 motor coil
-
-\- RESET and SLEEP → Connected together and pulled HIGH to VDD
-
-\- MS1, MS2, MS3 → GND for full-step mode
-
-
-
-Place an appropriately rated bulk capacitor (typically at least 47 µF, commonly 100 µF) directly across VMOT and motor GND near the A4988 driver. Verify polarity and voltage rating.
-
-
-
-Set the A4988 current limit to match the motor and driver cooling conditions before operation.
-
-
-
-\## 3. Homing Limit Switch
-
-
-
-\- Signal → Arduino D10
-
-\- Other terminal → GND
-
-\- Arduino configuration → INPUT\_PULLUP
-
-
-
-The switch is active LOW when pressed.
-
-
-
-\## 4. PCA9685 Servo Driver
-
-
-
-\- VCC → Regulated 5V logic
-
-\- GND → Common GND
-
-\- SDA → Arduino A4
-
-\- SCL → Arduino A5
-
-\- V+ → Regulated servo supply, nominally 5V
-
-
-
-Proposed servo channels:
-
-
-
-\- Channel 0 → Intake servo
-
-\- Channel 1 → Sorting gate servo
-
-\- Channel 2 → Output routing servo
-
-
-
-These servo roles are provisional until the original mechanical design is confirmed.
-
-
-
-The servo supply must be sized for peak servo current. Do not power the servos from the Arduino's onboard regulator.
-
-
-
-\## 5. Power Distribution
-
-
-
-\- 120V AC input → Enclosed AC/DC supply (mains side)
-
-\- AC/DC supply output → 12V DC bus
-
-\- 12V bus → A4988 VMOT
-
-\- 12V bus → Buck converter input
-
-\- Buck converter output → Regulated 5V bus
-
-\- 5V bus → Arduino, TCS3200, PCA9685 logic
-
-\- Suitable 5V servo supply → PCA9685 V+
-
-\- All low-voltage grounds → Common DC ground
-
-
-
-The 12V AC/DC supply and buck converter must have adequate current capacity. The 5V servo rail may require its own dedicated regulator.
-
-
-
-\## 6. Unused Arduino Pins
-
-
-
-Available for future expansion:
-
-
-
-\- D11, D12, D13
-
-\- A0, A1, A2, A3
-
-
-
-D0 and D1 are reserved for USB serial communication.
-
-
-
+- **Available for expansion:** `D11`, `D12`, `D13`, `A0`, `A1`, `A2`, `A3`
+- **Reserved:** `D0` and `D1` are reserved for USB serial communication.
